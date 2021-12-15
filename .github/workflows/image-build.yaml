@@ -23,7 +23,6 @@ jobs:
           images: improwised/ghar-image
           tags: |
             type=raw,value={{branch}}-{{sha}}-{{date 'X'}}
-            type=raw,value=latest
           labels: |
             org.opencontainers.image.title=ghar-image
             org.opencontainers.image.base.name=summerwind/actions-runner-dind
@@ -51,3 +50,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
