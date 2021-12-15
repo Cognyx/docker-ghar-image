@@ -1,9 +1,10 @@
 ARG BASE_IMAGE_TAG="v2.285.1-ubuntu-20.04"
-FROM summerwind/actions-runner-dind:$BASE_IMAGE_TAG
+FROM docker.io/summerwind/actions-runner-dind:$BASE_IMAGE_TAG
 USER root
-COPY --from=golang:1.17-buster "/usr/local/go/" "/usr/local/go/"
-COPY --from=composer:2.1.9 "/usr/bin/composer" "/usr/local/bin/composer"
-COPY --from=docker/buildx-bin /buildx /usr/libexec/docker/cli-plugins/docker-buildx
+COPY --from=docker.io/golang:1.17-buster "/usr/local/go/" "/usr/local/go/"
+COPY --from=docker.io/composer:2.1.9 "/usr/bin/composer" "/usr/local/bin/composer"
+COPY --from=docker.io/docker/buildx-bin /buildx /usr/libexec/docker/cli-plugins/docker-buildx
+RUN docker buildx create --name ghar --use
 RUN set -ex; \
   curl -sL https://deb.nodesource.com/setup_14.x | bash -; \
   curl https://raw.githubusercontent.com/kadwanev/retry/0b65e6b7f54ed36b492910470157e180bbcc3c84/retry -o /usr/bin/retry; \
