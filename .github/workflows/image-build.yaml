@@ -20,19 +20,21 @@ jobs:
         uses: docker/metadata-action@v5
         timeout-minutes: 5
         with:
-          images: improwised/ghar-image
+          images: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/ghar-image
           tags: |
             type=raw,value={{branch}}-{{sha}}-{{date 'X'}}
             type=raw,value=latest
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         timeout-minutes: 5
-      - name: Login to DockerHub
+
+      - name: "Login to ACR"
         uses: docker/login-action@v3
-        timeout-minutes: 5
         with:
-          username: ${{ vars.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+        timeout-minutes: 2
       - name: Build and push
         uses: docker/build-push-action@v6
         timeout-minutes: 5
