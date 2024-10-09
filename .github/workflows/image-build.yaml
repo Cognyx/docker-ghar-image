@@ -20,7 +20,7 @@ jobs:
         uses: docker/metadata-action@v5
         timeout-minutes: 5
         with:
-          images: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/ghar-image
+          images: cognyx1.azurecr.io/ghar-image
           tags: |
             type=raw,value={{branch}}-{{sha}}-{{date 'X'}}
             type=raw,value=latest
