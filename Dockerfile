@@ -1,7 +1,7 @@
 FROM docker.io/library/golang:1.21.5 AS golang
 FROM docker.io/library/composer:2.1.14 AS composer
-FROM docker.io/docker/buildx-bin:0.17.1 AS buildx
-FROM docker.io/summerwind/actions-runner-dind:v2.322.0-ubuntu-22.04
+FROM docker.io/docker/buildx-bin:0.22.0 AS buildx
+FROM docker.io/summerwind/actions-runner-dind:v2.323.0-ubuntu-22.04
 USER root
 COPY --from=golang "/usr/local/go/" "/usr/local/go/"
 COPY --from=composer "/usr/bin/composer" "/usr/local/bin/composer"
@@ -25,12 +25,12 @@ RUN set -ex; \
   npm install -g pnpm wrangler@3.56.0 firebase-tools; \
   apt-get clean autoclean; \
   apt-get autoremove --yes
-  # rm -rf /var/lib/{apt,dpkg,cache,log}/
+# rm -rf /var/lib/{apt,dpkg,cache,log}/
 # Force update-alternatives to use PHP 8.2
 RUN update-alternatives --set php /usr/bin/php8.2 && \
-    update-alternatives --set phar /usr/bin/phar8.2 && \
-    update-alternatives --set phpize /usr/bin/phpize8.2 && \
-    update-alternatives --set php-config /usr/bin/php-config8.2
+  update-alternatives --set phar /usr/bin/phar8.2 && \
+  update-alternatives --set phpize /usr/bin/phpize8.2 && \
+  update-alternatives --set php-config /usr/bin/php-config8.2
 ENV PATH="/usr/local/go/bin:${PATH}"
 USER runner
 ENV PATH="/usr/local/go/bin:${PATH}"
