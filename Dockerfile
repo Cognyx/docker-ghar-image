@@ -21,7 +21,7 @@ RUN set -ex; \
   php8.2-sockets php8.2-sqlite3 php8.2-tidy php8.2-tokenizer php8.2-xml php8.2-xmlwriter php8.2-zip php8.2-dev \
   php-pear libgd-tools \
   nodejs \
-  git unzip; \
+  git unzip libpq-dev; \
   npm install -g pnpm wrangler@3.56.0 firebase-tools; \
   apt-get clean autoclean; \
   apt-get autoremove --yes
