@@ -32,7 +32,7 @@ RUN update-alternatives --set php /usr/bin/php8.2 && \
   update-alternatives --set phpize /usr/bin/phpize8.2 && \
   update-alternatives --set php-config /usr/bin/php-config8.2
 ENV PATH="/usr/local/go/bin:${PATH}"
+RUN chown -R 1001:1001 "/home/runner/"
 USER runner
 ENV PATH="/usr/local/go/bin:${PATH}"
 RUN echo PATH=$PATH >> /runnertmp/.env
-RUN chown -R 1001:1001 "/home/runner/"
