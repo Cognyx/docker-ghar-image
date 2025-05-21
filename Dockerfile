@@ -35,3 +35,4 @@ ENV PATH="/usr/local/go/bin:${PATH}"
 USER runner
 ENV PATH="/usr/local/go/bin:${PATH}"
 RUN echo PATH=$PATH >> /runnertmp/.env
+RUN chown -R 1001:1001 "/home/runner/"
