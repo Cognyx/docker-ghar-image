@@ -6,9 +6,9 @@ D-in-D image for GitHub Actions Self-Hoster runner based on [summerwind/actions-
 
 | Package | Version |
 | - | - |
-| summerwind/actions-runner-dind | v2.324.0-ubuntu-22.04 |
+| summerwind/actions-runner-dind | v2.325.0-ubuntu-22.04 |
 | Golang | 1.21.5 |
-| Buildx | 0.22.0 |
+| Buildx | 0.25.0 |
 | Node | 20.18.0 |
 | npm | 10.8.2 |
 | Composer | 2.1.14 |
