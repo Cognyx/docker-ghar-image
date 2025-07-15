@@ -10,11 +10,11 @@ D-in-D image for GitHub Actions Self-Hoster runner based on [summerwind/actions-
 | Golang | 1.21.5 |
 | Buildx | 0.25.0 |
 | Node | 22.11.0 |
-| npm | 10.8.2 |
+| npm | 10.9.0 |
 | Composer | 2.1.14 |
-| PHP | 8.2.24 |
-| pnpm | 9.12.0 |
-| firebase | 13.20.2 |
+| PHP | 8.2.29 |
+| pnpm | 10.13.1 |
+| firebase | 14.10.1 |
   - php-apcu, php-bcmath, php-dom, php-ctype, php-curl, php-exif, php-fileinfo, php-fpm, php-gd, php-gmp, php-iconv, php-intl, php-json, php-mbstring, php-mysqlnd, php-soap, php-redis, php-mysqli, php-opcache, php-pdo, php-phar, php-posix, php-simplexml, php-sockets, php-sqlite3, php-tidy, php-tokenizer, php-xml, php-xmlwriter, php-zip, php-pear, libgd-tools
 <!-- - Docker    20.10.8 -->
 - [retry](https://raw.githubusercontent.com/kadwanev/retry/0b65e6b7f54ed36b492910470157e180bbcc3c84/retry)
