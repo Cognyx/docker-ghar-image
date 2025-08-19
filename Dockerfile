@@ -28,6 +28,18 @@ RUN set -ex; \
   ln -sf /usr/local/n/versions/node/22.11.0/bin/npm /usr/bin/npm; \
   ln -sf /usr/local/n/versions/node/22.11.0/bin/npx /usr/bin/npx; \
   npm install -g pnpm wrangler@3.56.0 firebase-tools; \
+  \
+  # ---- Install Kubernetes tools ----
+  echo "Installing kubectl..." && \
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+  install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && rm kubectl; \
+  \
+  echo "Installing Helm..." && \
+  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash; \
+  \
+  echo "Installing Azure CLI..." && \
+  curl -sL https://aka.ms/InstallAzureCLIDeb | bash; \
+  \
   apt-get clean autoclean; \
   apt-get autoremove --yes
 # rm -rf /var/lib/{apt,dpkg,cache,log}/
