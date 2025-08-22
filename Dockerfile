@@ -1,7 +1,7 @@
-FROM docker.io/library/golang:1.21.5 AS golang
+FROM docker.io/library/golang:1.24.2 AS golang
 FROM docker.io/library/composer:2.1.14 AS composer
-FROM docker.io/docker/buildx-bin:0.25.0 AS buildx
-FROM docker.io/summerwind/actions-runner-dind:v2.327.1-ubuntu-22.04
+FROM docker.io/docker/buildx-bin:0.27.0 AS buildx
+FROM docker.io/summerwind/actions-runner-dind:v2.328.0-ubuntu-22.04
 USER root
 COPY --from=golang "/usr/local/go/" "/usr/local/go/"
 COPY --from=composer "/usr/bin/composer" "/usr/local/bin/composer"
