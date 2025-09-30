@@ -20,7 +20,7 @@ jobs:
         uses: docker/metadata-action@v5
         timeout-minutes: 5
         with:
-          images: cognyx1.azurecr.io/ghar-image
+          images: ${{ secrets.GOOGLE_ARTIFACT_REGISTRY_LOGIN_SERVER }}/cognyx-471812/ghar-image
           tags: |
             type=raw,value={{branch}}-{{sha}}-{{date 'X'}}
             type=raw,value=latest
@@ -28,13 +28,21 @@ jobs:
         uses: docker/setup-buildx-action@v3
         timeout-minutes: 5
 
-      - name: "Login to ACR"
-        uses: docker/login-action@v3
+      # Authenticate to Google Cloud using Service Account Key
+      - name: Authenticate to GCP
+        id: auth
+        uses: google-github-actions/auth@v2
         with:
-          registry: cognyx1.azurecr.io #${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
-          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
-        timeout-minutes: 2
+          credentials_json: ${{ secrets.GOOGLE_ARTIFACT_REGISTRY_SA_KEY }}
+
+      # Login to Google Artifact Registry
+      - name: "Login to GAR"
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
+        with:
+          registry: ${{ secrets.GOOGLE_ARTIFACT_REGISTRY_LOGIN_SERVER }}
+          username: _json_key
+          password: ${{ secrets.GOOGLE_ARTIFACT_REGISTRY_SA_KEY }}
+
       - name: Build and push
         uses: docker/build-push-action@v6
         timeout-minutes: 5
