@@ -7,7 +7,7 @@ COPY --from=golang "/usr/local/go/" "/usr/local/go/"
 COPY --from=composer "/usr/bin/composer" "/usr/local/bin/composer"
 COPY --from=buildx /buildx /usr/libexec/docker/cli-plugins/docker-buildx
 RUN set -ex; \
-  curl -sL https://deb.nodesource.com/setup_22.x | bash -; \
+  curl -sL https://deb.nodesource.com/setup_24.x | bash -; \
   curl https://raw.githubusercontent.com/kadwanev/retry/0b65e6b7f54ed36b492910470157e180bbcc3c84/retry -o /usr/bin/retry; \
   chmod +x /usr/bin/retry; \
   # Add Ondrej PHP PPA for PHP 8.2
@@ -28,9 +28,9 @@ RUN set -ex; \
   git unzip libpq-dev; \
   npm install -g n; \
   n 24.11.0; \
-  ln -sf /usr/local/n/versions/node/22.11.0/bin/node /usr/bin/node; \
-  ln -sf /usr/local/n/versions/node/22.11.0/bin/npm /usr/bin/npm; \
-  ln -sf /usr/local/n/versions/node/22.11.0/bin/npx /usr/bin/npx; \
+  ln -sf /usr/local/n/versions/node/24.11.0/bin/node /usr/bin/node; \
+  ln -sf /usr/local/n/versions/node/24.11.0/bin/npm /usr/bin/npm; \
+  ln -sf /usr/local/n/versions/node/24.11.0/bin/npx /usr/bin/npx; \
   npm install -g pnpm wrangler@3.56.0 firebase-tools; \
   \
   # ---- Install Kubernetes tools ----
