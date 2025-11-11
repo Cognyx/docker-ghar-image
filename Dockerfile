@@ -1,7 +1,7 @@
-FROM docker.io/library/golang:1.24.2 AS golang
+FROM docker.io/library/golang:1.25.3 AS golang
 FROM docker.io/library/composer:2.1.14 AS composer
-FROM docker.io/docker/buildx-bin:0.27.0 AS buildx
-FROM docker.io/summerwind/actions-runner-dind:v2.328.0-ubuntu-22.04
+FROM docker.io/docker/buildx-bin:0.29.1 AS buildx
+FROM docker.io/summerwind/actions-runner-dind:v2.329.0-ubuntu-24.04
 USER root
 COPY --from=golang "/usr/local/go/" "/usr/local/go/"
 COPY --from=composer "/usr/bin/composer" "/usr/local/bin/composer"
@@ -27,7 +27,7 @@ RUN set -ex; \
   nodejs \
   git unzip libpq-dev; \
   npm install -g n; \
-  n 22.11.0; \
+  n 24.11.0; \
   ln -sf /usr/local/n/versions/node/22.11.0/bin/node /usr/bin/node; \
   ln -sf /usr/local/n/versions/node/22.11.0/bin/npm /usr/bin/npm; \
   ln -sf /usr/local/n/versions/node/22.11.0/bin/npx /usr/bin/npx; \
