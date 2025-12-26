@@ -25,7 +25,7 @@ D-in-D image for GitHub Actions Self-Hoster runner based on [summerwind/actions-
 
 ## Run
 
-`docker run -it --entrypoint=bash --rm cognyx1.azurecr.io/ghar-image`
+`docker run -it --entrypoint=bash --rm eu.gcr.io/cognyx-471812/ghar-image:latest`
 
 ## Build
 
