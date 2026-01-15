@@ -10,7 +10,7 @@ D-in-D image for GitHub Actions Self-Hoster runner based on [summerwind/actions-
 | **GitHub Actions Runner (summerwind)** | `2.330.0`   | `/runner/run.sh --version` |
 | **Golang**                             | `1.25.3`    | `go version`               |
 | **Buildx**                             | `0.30.1`    | `docker buildx version`    |
-| **Node.js**                            | `24.11.0`   | `node --version`           |
+| **Node.js**                            | `24.13.0`   | `node --version`           |
 | **npm**                                | `11.6.1`    | `npm --version`            |
 | **Composer**                           | `2.1.14`    | `composer --version`       |
 | **PHP**                                | `8.2.30`    | `php --version`            |

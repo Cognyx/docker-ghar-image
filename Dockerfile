@@ -27,10 +27,10 @@ RUN set -ex; \
   nodejs \
   git unzip libpq-dev; \
   npm install -g n; \
-  n 24.11.0; \
-  ln -sf /usr/local/n/versions/node/24.11.0/bin/node /usr/bin/node; \
-  ln -sf /usr/local/n/versions/node/24.11.0/bin/npm /usr/bin/npm; \
-  ln -sf /usr/local/n/versions/node/24.11.0/bin/npx /usr/bin/npx; \
+  n 24.13.0; \
+  ln -sf /usr/local/n/versions/node/24.13.0/bin/node /usr/bin/node; \
+  ln -sf /usr/local/n/versions/node/24.13.0/bin/npm /usr/bin/npm; \
+  ln -sf /usr/local/n/versions/node/24.13.0/bin/npx /usr/bin/npx; \
   npm install -g pnpm wrangler@3.56.0 firebase-tools; \
   \
   # ---- Install Kubernetes tools ----
