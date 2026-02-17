@@ -7,7 +7,7 @@ D-in-D image for GitHub Actions Self-Hoster runner based on [summerwind/actions-
 | Package                                | Version     | Version CLI                |
 | -------------------------------------- | ----------- | -------------------------- |
 | **Ubuntu (Base OS)**                   | `24.04 LTS` | `cat /etc/os-release`      |
-| **GitHub Actions Runner (summerwind)** | `2.330.0`   | `/runner/run.sh --version` |
+| **GitHub Actions Runner (summerwind)** | `2.331.0`   | `/runner/run.sh --version` |
 | **Golang**                             | `1.25.3`    | `go version`               |
 | **Buildx**                             | `0.30.1`    | `docker buildx version`    |
 | **Node.js**                            | `24.13.0`   | `node --version`           |
