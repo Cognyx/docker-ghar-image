@@ -1,12 +1,13 @@
 FROM docker.io/library/golang:1.25.3 AS golang
 FROM docker.io/library/composer:2.1.14 AS composer
 FROM docker.io/docker/buildx-bin:0.30.1 AS buildx
-FROM docker.io/summerwind/actions-runner-dind:v2.332.0-ubuntu-24.04
+FROM docker.io/summerwind/actions-runner-dind:v2.333.0-ubuntu-24.04
 USER root
 COPY --from=golang "/usr/local/go/" "/usr/local/go/"
 COPY --from=composer "/usr/bin/composer" "/usr/local/bin/composer"
 COPY --from=buildx /buildx /usr/libexec/docker/cli-plugins/docker-buildx
 ENV PATH="/usr/local/go/bin:${PATH}"
+ENV PLAYWRIGHT_BROWSERS_PATH="/ms-playwright"
 
 RUN set -ex; \
   export DEBIAN_FRONTEND=noninteractive; \
@@ -58,6 +59,13 @@ RUN set -ex; \
   \
   echo "Installing Azure CLI..."; \
   curl -fsSL https://aka.ms/InstallAzureCLIDeb | bash; \
+  \
+  echo "Installing Playwright and Chromium dependencies..."; \
+  npm install -g playwright@1.58.2; \
+  npx playwright install --with-deps chromium; \
+  chmod -R 777 $PLAYWRIGHT_BROWSERS_PATH; \
+  npm cache clean --force; \
+  chown -R 1001:1001 /home/runner/.npm /home/runner/.cache || true; \
   \
   # Cleanup apt caches aggressively
   apt-get clean autoclean; \
