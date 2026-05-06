@@ -1,7 +1,7 @@
 FROM docker.io/library/golang:1.25.3 AS golang
 FROM docker.io/library/composer:2.1.14 AS composer
 FROM docker.io/docker/buildx-bin:0.30.1 AS buildx
-FROM docker.io/summerwind/actions-runner-dind:v2.333.0-ubuntu-24.04
+FROM docker.io/summerwind/actions-runner-dind:v2.334.0-ubuntu-24.04
 USER root
 COPY --from=golang "/usr/local/go/" "/usr/local/go/"
 COPY --from=composer "/usr/bin/composer" "/usr/local/bin/composer"
@@ -32,7 +32,7 @@ RUN set -ex; \
   php8.2-sockets php8.2-sqlite3 php8.2-tidy php8.2-tokenizer php8.2-xml php8.2-xmlwriter php8.2-zip php8.2-dev \
   php-pear libgd-tools \
   nodejs \
-  git unzip libpq-dev; \
+  git unzip libpq-dev build-essential libvips-dev pkg-config; \
   \
   # Configure PHP alternatives
   update-alternatives --set php /usr/bin/php8.2; \
