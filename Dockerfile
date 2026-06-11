@@ -72,5 +72,8 @@ RUN set -ex; \
   apt-get autoremove --yes; \
   rm -rf /var/lib/apt/lists/*
 
+# Dynamically append whatever is in CUSTOM_FLAGS to the GitHub registration command
+RUN sed -i 's/--labels "${RUNNER_LABELS}"/--labels "${RUNNER_LABELS}" ${CUSTOM_FLAGS}/g' /usr/bin/startup.sh
+
 USER runner
 RUN echo "PATH=$PATH" >> /runnertmp/.env
