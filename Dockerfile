@@ -41,6 +41,7 @@ RUN set -ex; \
   npx playwright install --with-deps chromium; \
   chmod -R 777 $PLAYWRIGHT_BROWSERS_PATH; \
   npm cache clean --force; \
+  mkdir -p /home/runner/.npm /home/runner/.cache; \
   chown -R 1001:1001 /home/runner/.npm /home/runner/.cache || true; \
   \
   # Cleanup apt caches aggressively
