@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:1.25.3 AS golang
+FROM docker.io/library/golang:1.26.4 AS golang
 FROM docker.io/docker/buildx-bin:0.35.0 AS buildx
 FROM docker.io/summerwind/actions-runner-dind:v2.335.1-ubuntu-24.04
 USER root
