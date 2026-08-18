@@ -49,5 +49,14 @@ RUN set -ex; \
   apt-get autoremove --yes; \
   rm -rf /var/lib/apt/lists/*
 
+ARG DOCKER_COMPOSE_VERSION=v5.5.0
+
+# Install Docker Compose v2 plugin
+RUN set -ex; \
+  mkdir -p /usr/local/lib/docker/cli-plugins; \
+  curl -fLo /usr/local/lib/docker/cli-plugins/docker-compose \
+  "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-$(uname -m)"; \
+  chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
 USER runner
 RUN echo "PATH=$PATH" >> /home/runner/.env
