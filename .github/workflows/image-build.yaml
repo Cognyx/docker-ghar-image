@@ -50,23 +50,17 @@ jobs:
         with:
           images: ${{ secrets.GOOGLE_ARTIFACT_REGISTRY_LOGIN_SERVER }}/cognyx-471812/ghar-image
           tags: |
-            type=raw,value={{branch}}-{{sha}}-{{date 'X'}}
-            type=raw,value=latest
-
-      - name: PR Tags
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          echo "tags=test-${{ github.sha }}" >> $GITHUB_ENV
-        timeout-minutes: 1
+            type=raw,value=new-runner
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v7
         timeout-minutes: 10
         with:
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          file: Dockerfile
+          cache-from: type=gha,scope=image-build
+          cache-to: type=gha,mode=max,scope=image-build
           push: ${{ github.ref_name == 'main' }}
-          tags: ${{ github.event_name == 'pull_request' && env.tags || steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
