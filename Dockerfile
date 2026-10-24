@@ -1,9 +1,9 @@
-FROM docker.io/library/golang:1.26.4 AS golang
-FROM docker.io/docker/buildx-bin:0.35.0 AS buildx
-FROM docker.io/summerwind/actions-runner-dind:v2.335.1-ubuntu-24.04
+FROM docker.io/library/golang:1.27.3 AS golang
+
+FROM ghcr.io/actions/actions-runner:2.338.1
+
 USER root
 COPY --from=golang "/usr/local/go/" "/usr/local/go/"
-COPY --from=buildx /buildx /usr/libexec/docker/cli-plugins/docker-buildx
 ENV PATH="/usr/local/go/bin:${PATH}"
 ENV PLAYWRIGHT_BROWSERS_PATH="/ms-playwright"
 
@@ -25,7 +25,7 @@ RUN set -ex; \
   git unzip libpq-dev build-essential libvips-dev pkg-config; \
   \
   # Setup Node packages
-  npm install -g pnpm wrangler@3.56.0 firebase-tools; \
+  npm install -g pnpm@11.8.0 wrangler@4.150.0 firebase-tools; \
   \
   # Install Kubernetes tools
   echo "Installing kubectl..."; \
@@ -49,8 +49,14 @@ RUN set -ex; \
   apt-get autoremove --yes; \
   rm -rf /var/lib/apt/lists/*
 
-# Dynamically append whatever is in CUSTOM_FLAGS to the GitHub registration command
-RUN sed -i 's/--labels "${RUNNER_LABELS}"/--labels "${RUNNER_LABELS}" ${CUSTOM_FLAGS}/g' /usr/bin/startup.sh
+ARG DOCKER_COMPOSE_VERSION=v5.5.0
+
+# Install Docker Compose v2 plugin
+RUN set -ex; \
+  mkdir -p /usr/local/lib/docker/cli-plugins; \
+  curl -fLo /usr/local/lib/docker/cli-plugins/docker-compose \
+  "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-$(uname -m)"; \
+  chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
 USER runner
-RUN echo "PATH=$PATH" >> /runnertmp/.env
+RUN echo "PATH=$PATH" >> /home/runner/.env
