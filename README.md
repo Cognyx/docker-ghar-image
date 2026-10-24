@@ -31,11 +31,11 @@ docker buildx build -t ghar-image .
 ## Run
 
 ```bash
-docker run -it --entrypoint=bash --rm ghar-image:new-runner
+docker run -it --entrypoint=bash --rm ghar-image:latest
 ```
 
 ## Notes
 
 - Docker-in-Docker is provided by a sidecar container (infra), not this image.
 - The runner `PATH` env file lives at `/home/runner/.env`.
-- The image is pushed to `eu.gcr.io/cognyx-471812/ghar-image:new-runner`.
+- The image is pushed to `eu.gcr.io/cognyx-471812/ghar-image:latest` (plus `{{branch}}-{{sha}}-{{date}}`).
