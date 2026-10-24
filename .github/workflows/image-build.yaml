@@ -68,6 +68,7 @@ jobs:
           cache-from: type=gha,scope=image-build
           cache-to: type=gha,mode=max,scope=image-build
           push: ${{ github.ref_name == 'main' }}
+          provenance: ${{ github.event_name != 'pull_request' }}
           tags: ${{ github.event_name == 'pull_request' && env.tags || steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
