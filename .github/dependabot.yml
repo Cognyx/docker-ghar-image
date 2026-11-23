@@ -10,3 +10,16 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "main"
+
+  # GitHub Actions are pinned to commit SHAs with a version comment (COM-1440).
+  # Dependabot moves the SHA and the comment together, in one grouped PR a week.
+  # The cooldown skips releases younger than 7 days.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns: ["*"]
