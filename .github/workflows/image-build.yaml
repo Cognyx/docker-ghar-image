@@ -14,6 +14,11 @@ on:
       - "Dockerfile"
       - ".github/workflows/image-build.yaml"
       - "!**.md"
+  # Weekly rebuild so apt-get upgrade picks up OS security fixes (COM-853, COM-1264);
+  # the image otherwise only changed when the Dockerfile did.
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -61,12 +66,15 @@ jobs:
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v7
-        timeout-minutes: 10
+        # 10 min was too short once the cache missed (#35 timed out).
+        timeout-minutes: 30
         with:
           context: .
           file: Dockerfile
           cache-from: type=gha,scope=image-build
           cache-to: type=gha,mode=max,scope=image-build
+          # A scheduled or manual rebuild must not reuse the cached apt layer.
+          no-cache: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
           push: ${{ github.ref_name == 'main' }}
           provenance: ${{ github.event_name != 'pull_request' && 'mode=min,inline-only=true' || 'false' }}
           tags: ${{ github.event_name == 'pull_request' && env.tags || steps.meta.outputs.tags }}
