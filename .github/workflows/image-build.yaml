@@ -14,6 +14,12 @@ on:
       - "Dockerfile"
       - ".github/workflows/image-build.yaml"
       - "!**.md"
+  # Weekly rebuild so apt-get upgrade picks up OS security fixes (COM-853, COM-1264);
+  # the image otherwise only changed when the Dockerfile did.
+  # 05:17 UTC Monday, after the GKE maintenance window (Monday 00:30-04:30 UTC).
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -53,22 +59,49 @@ jobs:
             type=raw,value={{branch}}-{{sha}}-{{date 'X'}}
             type=raw,value=latest
 
-      - name: PR Tags
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          echo "tags=test-${{ github.sha }}" >> $GITHUB_ENV
-        timeout-minutes: 1
+      - name: Build Docker Image
+        uses: docker/build-push-action@v7
+        # 10 min was too short once the cache missed (#35 timed out).
+        timeout-minutes: 30
+        with:
+          context: .
+          file: Dockerfile
+          cache-from: type=gha,scope=image-build
+          # A scheduled or manual rebuild must not reuse the cached apt layer.
+          no-cache: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+          load: true
+          push: false
+          provenance: false
+          tags: ghar-image:smoke
 
-      - name: Build and Push Docker Image
+      # A weekly apt-get upgrade must not push an image that breaks CI.
+      - name: Smoke Test
+        timeout-minutes: 2
+        run: |
+          docker run --rm --entrypoint sh ghar-image:smoke -c '
+            set -e
+            go version
+            node --version
+            python3 --version
+            sqlc version
+            docker compose version
+            /opt/hostedtoolcache/node/*/x64/bin/node --version
+            /opt/hostedtoolcache/Python/*/x64/bin/python3 --version
+            test -w /opt/hostedtoolcache
+          '
+
+      # Same builder, no external cache source: every layer comes from the build above,
+      # so the pushed image is the one that passed the smoke test.
+      - name: Push Docker Image
+        if: ${{ github.ref == 'refs/heads/main' }}
         uses: docker/build-push-action@v7
         timeout-minutes: 10
         with:
           context: .
           file: Dockerfile
-          cache-from: type=gha,scope=image-build
           cache-to: type=gha,mode=max,scope=image-build
-          push: ${{ github.ref_name == 'main' }}
-          provenance: ${{ github.event_name != 'pull_request' && 'mode=min,inline-only=true' || 'false' }}
-          tags: ${{ github.event_name == 'pull_request' && env.tags || steps.meta.outputs.tags }}
+          push: true
+          provenance: mode=min,inline-only=true
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
