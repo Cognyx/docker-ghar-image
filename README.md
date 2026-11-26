@@ -53,8 +53,12 @@ action downloads the new version on each job, as before.
 ## Rebuilds
 
 The image builds on a push to `main` that changes the Dockerfile or the workflow, and
-every Monday without the layer cache, so `apt-get upgrade` picks up OS security fixes.
-Run the workflow by hand for an urgent rebuild.
+every Monday at 05:17 UTC without the layer cache, so `apt-get upgrade` picks up OS
+security fixes. Run the workflow by hand for an urgent rebuild.
+
+Every build runs a smoke test (Go, Node, Python, sqlc, Docker Compose and the tool cache)
+before anything is pushed. A failed test pushes nothing, and runners keep the last `latest`.
+To roll back, pin a `main-<sha>-<epoch>` tag in the runner set.
 
 ## Notes
 
